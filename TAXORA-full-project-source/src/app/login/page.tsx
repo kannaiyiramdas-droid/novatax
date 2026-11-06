@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { LoginForm } from "@/components/login-form";
+export default function LoginPage() { return <main className="grid min-h-screen place-items-center px-5 py-10" style={{background:"radial-gradient(circle at 50% 0%,rgba(109,74,255,.2),transparent 45%)"}}><div className="w-full max-w-md"><Link href="/" className="mb-8 block text-center text-xl font-black">OPTO<span className="text-violet-400">TAX</span></Link><div className="panel p-8"><h1 className="text-2xl font-bold">Welcome back</h1><p className="muted mt-2 text-sm">Sign in to your workspace.</p><LoginForm/><p className="mt-6 text-center text-sm muted">New to TAXORA? <Link className="text-violet-300" href="/register">Create account</Link></p></div></div></main>; }

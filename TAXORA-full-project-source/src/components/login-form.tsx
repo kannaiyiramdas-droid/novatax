@@ -1,0 +1,5 @@
+ "use client";
+import { useState } from "react"; import { useRouter } from "next/navigation";
+export function LoginForm(){const [error,setError]=useState("");const [busy,setBusy]=useState(false);const router=useRouter();
+async function submit(e:React.FormEvent<HTMLFormElement>){e.preventDefault();setError("");setBusy(true);const f=new FormData(e.currentTarget);try{const r=await fetch("/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.fromEntries(f.entries()))});const d=await r.json();if(!r.ok)throw new Error(d.error||"Sign in failed");router.push("/dashboard");router.refresh();}catch(x){setError(x instanceof Error?x.message:"Unable to sign in");}finally{setBusy(false);}}
+return <form onSubmit={submit} className="mt-7 space-y-4"><label className="block text-sm">Email<input className="input mt-2" name="email" type="email" required/></label><label className="block text-sm">Password<input className="input mt-2" name="password" type="password" required/></label>{error&&<p className="text-sm text-red-300">{error}</p>}<button className="btn w-full" disabled={busy}>{busy?"Signing in…":"Sign in"}</button></form>}
