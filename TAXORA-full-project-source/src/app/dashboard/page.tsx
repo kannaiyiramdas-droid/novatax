@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Building2, Users, ShieldCheck, FileText, Plus, LogOut, Settings, LayoutDashboard } from "lucide-react";
+import { Building2, Users, ShieldCheck, FileText, Plus, Settings, LayoutDashboard, Search } from "lucide-react";
 import { requireWorkspace } from "@/lib/current-workspace";
 import { LogoutButton } from "@/components/logout-button";
 
@@ -7,10 +7,14 @@ export default async function DashboardPage(){
  const m=await requireWorkspace(); const org=m.organization;
  return <main className="min-h-screen md:flex">
   <aside className="border-b border-slate-800 bg-[#0c1124] p-5 md:min-h-screen md:w-64 md:border-b-0 md:border-r">
-   <Link href="/" className="flex items-center gap-3 text-lg font-black"><span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-500">O</span> OPTO<span className="text-violet-400">TAX</span></Link>
+   <Link href="/" className="flex items-center gap-3 text-lg font-black"><span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-500">T</span> TAXORA</Link>
    <p className="mt-10 text-xs font-bold uppercase tracking-widest muted">Workspace</p>
    <div className="mt-3 rounded-xl bg-violet-500/10 p-3"><p className="truncate font-semibold">{org.name}</p><p className="mt-1 text-xs muted">{m.role}</p></div>
-   <nav className="mt-6 space-y-2 text-sm"><div className="flex items-center gap-3 rounded-lg bg-white/5 px-3 py-3 text-violet-200"><LayoutDashboard size={17}/> Dashboard</div><Link className="flex items-center gap-3 rounded-lg px-3 py-3 muted hover:bg-white/5 hover:text-white" href="/dashboard/gstins"><Building2 size={17}/> GSTIN management</Link></nav>
+   <nav className="mt-6 space-y-2 text-sm">
+    <div className="flex items-center gap-3 rounded-lg bg-white/5 px-3 py-3 text-violet-200"><LayoutDashboard size={17}/> Dashboard</div>
+    <Link className="flex items-center gap-3 rounded-lg px-3 py-3 muted hover:bg-white/5 hover:text-white" href="/dashboard/gstins"><Building2 size={17}/> GSTIN management</Link>
+    <Link className="flex items-center gap-3 rounded-lg px-3 py-3 muted hover:bg-white/5 hover:text-white" href="/dashboard/gst-profile"><Search size={17}/> GSTIN Company Profile</Link>
+   </nav>
    <div className="mt-10 border-t border-slate-800 pt-5"><LogoutButton/></div>
   </aside>
   <section className="min-w-0 flex-1 p-5 md:p-9">
@@ -21,10 +25,11 @@ export default async function DashboardPage(){
     <Metric title="Your role" value={m.role} icon={<ShieldCheck/>}/>
     <Metric title="Compliance reports" value="Not connected" icon={<FileText/>}/>
    </div>
-   <div className="panel mt-7 p-6"><h2 className="text-lg font-bold">Get started</h2><p className="mt-2 text-sm muted">Set up your organisation before configuring compliance workflows.</p><div className="mt-5 grid gap-3 md:grid-cols-2">
-    <Link href="/dashboard/gstins" className="rounded-xl border border-slate-700 p-4 hover:border-violet-500/60"><Building2 className="mb-3 text-violet-300"/><p className="font-semibold">Manage GST registrations</p><p className="mt-1 text-sm muted">Add and maintain GSTIN records for this workspace.</p></Link>
-    <div className="rounded-xl border border-slate-700 p-4 opacity-70"><Settings className="mb-3 text-blue-300"/><p className="font-semibold">Configure integrations</p><p className="mt-1 text-sm muted">GSP and GST portal integrations will be configured in a later phase.</p></div>
+   <div className="panel mt-7 p-6"><h2 className="text-lg font-bold">GST tools</h2><p className="mt-2 text-sm muted">Search taxpayer details using a GSTIN.</p><div className="mt-5 grid gap-3 md:grid-cols-2">
+    <Link href="/dashboard/gst-profile" className="rounded-xl border border-slate-700 p-4 transition hover:border-violet-500/60"><Search className="mb-3 text-violet-300"/><p className="font-semibold">GSTIN Company Profile</p><p className="mt-1 text-sm muted">Search legal name, trade name, registration status and available profile data.</p></Link>
+    <Link href="/dashboard/gstins" className="rounded-xl border border-slate-700 p-4 transition hover:border-violet-500/60"><Building2 className="mb-3 text-blue-300"/><p className="font-semibold">GSTIN management</p><p className="mt-1 text-sm muted">Manage registrations saved in this workspace.</p></Link>
    </div></div>
+   <div className="panel mt-5 p-6"><h2 className="text-lg font-bold">Workspace</h2><p className="mt-2 text-sm muted">Your organisation data is isolated from other TAXORA workspaces.</p><div className="mt-4 flex items-center gap-2 text-sm muted"><Settings size={16}/> GSP API access must be configured by the administrator.</div></div>
    <p className="mt-7 text-xs muted">TAXORA · Data is scoped to your organisation.</p>
   </section>
  </main>;
