@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSessionUserId } from "@/lib/auth";
 import { searchGstinProfile, validateGstin } from "@/lib/gst/finagg-profile";
+import { getConfiguredGsp } from "@/lib/gst/gsp/catalog";
 
 export const runtime = "nodejs";
 
@@ -15,8 +16,9 @@ export async function POST(request: Request) {
   const membership = await prisma.membership.findFirst({ where: { userId, user: { active: true } }, orderBy: { createdAt: "asc" } });
   if (!membership) return NextResponse.json({ error: "No organisation workspace found." }, { status: 403 });
   try {
+    const { descriptor, config } = getConfiguredGsp();
     const profile = await searchGstinProfile(gstin);
-    await prisma.auditLog.create({ data: { organizationId: membership.organizationId, userId, action: "GSTIN_PROFILE_LOOKUP", entity: "GSTIN", entityId: gstin, details: { provider: "FinAGG", gstin } } });
+    await prisma.auditLog.create({ data: { organizationId: membership.organizationId, userId, action: "GSTIN_PROFILE_LOOKUP", entity: "GSTIN", entityId: gstin, details: { provider: descriptor.name, environment: config.environment, gstin } } });
     return NextResponse.json({ ok: true, gstin, profile });
   } catch (error) {
     console.error("TAXORA GSTIN profile lookup failed", error);
